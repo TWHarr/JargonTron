@@ -17,7 +17,7 @@ twitter = Twython(APP_KEY, APP_SECRET,
 
 lastTweet = 0
 
-class exclamation(peewee.Model):
+class exc(peewee.Model):
     text = peewee.CharField()
 
     class Meta:
@@ -70,7 +70,7 @@ def prune(replies, followers):
 def intake(tweets):
     """ add new phrases from pruned selection """
 
-    commands = ["player", "quip", "exclamation"]
+    commands = ["player", "quip", "exc"]
     for tweet in reversed(tweets):
 
         text = tweet[0][12:].split("+", 1)

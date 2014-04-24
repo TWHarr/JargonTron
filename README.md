@@ -19,7 +19,7 @@ You get the idea.
 ##Adding Content
 Want to add stuff to JargonTron? It's super easy! Just tweet: <br>
 
-@JargonTron exclamation + GUH.<br>
+@JargonTron exc + GUH.<br>
 @JargonTron player + Addie Joss <br>
 @JargonTron quip + is a horrible turdlord. <br>
 
