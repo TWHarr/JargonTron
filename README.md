@@ -5,7 +5,7 @@ JargonTron is a sports jargon generator that you can teach new phrases!
 <br>
 Note: In order to prevent people from abusing this bot and placing objectionable content, it only accepts content from people it follows. If you want to add to the bot, please hit up @DoHimJob. 
 ##Format
-JargonTron uses a MySQL database with three tables, Exclamation, Player, and Quip. It randomly selects an entry on each table to create a new garbage sports phrase, using this format: **Exclamation**Player*Quip*
+JargonTron uses a MySQL database with three tables, Exclamation, Player, and Quip. It randomly selects an entry on each table to create a new garbage sports phrase, using this format: **Exclamation** Player *Quip*
 <br>
 <br>
 Here are some example tweets I just generated: 
