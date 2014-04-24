@@ -45,9 +45,12 @@ def getLast():
     stream = twitter.get_home_timeline()
     for tweet in stream:
         if (tweet['user']['id'] == 2432961043) :
+          if (tweet['in_reply_to_status_id'] != None):
             lastTweet = tweet['in_reply_to_status_id']
             print "The last tweet is " + str(lastTweet)
             break
+          else:
+           pass
 
 def strToClass(str):
     return getattr(sys.modules[__name__], str)
