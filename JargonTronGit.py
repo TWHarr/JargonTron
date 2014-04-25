@@ -93,7 +93,7 @@ def intake(tweets):
         except:
           print "Duplicate status."
     else:
-      newTweet = "@" + tweet[2] + " Huh? Did you follow the format? Find it here: PLACEHOLDER."
+      newTweet = "@" + tweet[2] + " Huh? Did you follow the format? Find it here: http://bit.ly/1k9x0zH."
       newTweet = newTweet[:130]
       try:
         twitter.update_status(status=newTweet, in_reply_to_status_id=int(tweet[1]))
