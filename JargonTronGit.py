@@ -41,6 +41,8 @@ def newRow(table, userInput):
   newText.save()
 
 def getLast():
+  """ Determine where the bot left off """
+
   global lastTweet
   stream = twitter.get_user_timeline(user_id=2432961043)
   for tweet in stream:
@@ -57,6 +59,7 @@ def strToClass(str):
 
 def prune(replies, followers):
   """ select only tweets from users the bot follows """
+
   prunedTweets = []
   for tweet in replies:
     if ((tweet['user']['id'] in followers) and (tweet['in_reply_to_status_id'] == None) and (int(tweet['id']) > int(lastTweet))):
@@ -93,6 +96,10 @@ def intake(tweets):
         except:
           print "Duplicate status."
     """
+
+    This is causing problems when people talk ABOUT the bot, but are not giving commands.
+    Commenting out until it can determine which is which.
+
     else:
       newTweet = "@" + tweet[2] + " Huh? Did you follow the format? Find it here: http://bit.ly/1k9x0zH."
       newTweet = newTweet[:130]
@@ -104,6 +111,7 @@ def intake(tweets):
 
 def generate():
   """ Generate a new jargon tweet """
+
   first = exc.select().order_by(fn.Rand()).limit(1).get()
   firstP = first.text
   second = player.select().order_by(fn.Rand()).limit(1).get()
@@ -114,6 +122,8 @@ def generate():
   return newTweet
 
 def onDemand():
+  """ Use generate() to provide a new tweet for a user when they tweet 'hit me' """
+
   tweets = twitter.get_mentions_timeline()
   for tweet in reversed(tweets):
     text = tweet['text'][12:]
@@ -124,6 +134,8 @@ def onDemand():
       twitter.update_status(status=newTweet, in_reply_to_status_id=int(tweet['id']))
 
 def periodic():
+  """ Periodically tweet out a jargon phrase using generate() """
+
   tweetCheck = random.randint(0,15)
   if (tweetCheck == 5):
     newTweet = generate()
