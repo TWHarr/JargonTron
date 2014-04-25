@@ -121,7 +121,14 @@ def onDemand():
       newTweet = newTweet[:139]
       twitter.update_status(status=newTweet, in_reply_to_status_id=int(tweet['id']))
 
+def periodic():
+  tweetCheck = random.randint(0,15)
+  if (tweetCheck == 5):
+    newTweet = generate()
+    twitter.update_status(status=newTweet)
+
 
 getLast()
 intake(prune(twitter.get_mentions_timeline(), twitter.get_friends_ids()['ids']))
 onDemand()
+periodic()
