@@ -42,7 +42,7 @@ def newRow(table, userInput):
 
 def getLast():
   global lastTweet
-  stream = twitter.get_home_timeline()
+  stream = twitter.get_user_timeline(user_id=2432961043)
   for tweet in stream:
     if (tweet['user']['id'] == 2432961043) :
       if (tweet['in_reply_to_status_id'] != None):
@@ -92,6 +92,7 @@ def intake(tweets):
           twitter.update_status(status=newTweet, in_reply_to_status_id=int(tweet[1]))
         except:
           print "Duplicate status."
+    """
     else:
       newTweet = "@" + tweet[2] + " Huh? Did you follow the format? Find it here: http://bit.ly/1k9x0zH."
       newTweet = newTweet[:130]
@@ -99,6 +100,7 @@ def intake(tweets):
         twitter.update_status(status=newTweet, in_reply_to_status_id=int(tweet[1]))
       except:
         print "Duplicate status."
+    """
 
 def generate():
   """ Generate a new jargon tweet """
