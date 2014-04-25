@@ -75,9 +75,10 @@ def intake(tweets):
 
     commands = ["player", "quip", "exc"]
     for tweet in reversed(tweets):
-
         text = tweet[0][12:].split("+", 1)
-        if (text[0].lstrip().rstrip() in commands):
+        if (tweet[0][12:].lstrip().rstrip() == "hit me"):
+            pass
+        elif (text[0].lstrip().rstrip() in commands):
             tableType = text[0].lstrip().rstrip()
             userInput = text[1].lstrip().rstrip()
             try:
@@ -102,5 +103,28 @@ def intake(tweets):
             except:
                 print "Duplicate status."
 
+def generate():
+  """ Generate a new jargon tweet """
+  first = exc.select().order_by(fn.Rand()).limit(1).get()
+  firstP = first.text
+  second = player.select().order_by(fn.Rand()).limit(1).get()
+  secondP = second.text
+  third = quip.select().order_by(fn.Rand()).limit(1).get()
+  thirdP = third.text
+  newTweet = firstP + " " + secondP + " " + thirdP
+  return newTweet
+
+def onDemand():
+  tweets = twitter.get_mentions_timeline()
+  for tweet in reversed(tweets):
+    text = tweet['text'][12:]
+    if ((text.lstrip().rstrip() == "hit me") and (int(tweet['id']) > int(lastTweet))):
+      newJargon = generate()
+      newTweet = "@" + tweet['user']['screen_name'] + " " + newJargon
+      newTweet = newTweet[:139]
+      twitter.update_status(status=newTweet, in_reply_to_status_id=int(tweet['id']))
+
+
 getLast()
 intake(prune(twitter.get_mentions_timeline(), twitter.get_friends_ids()['ids']))
+onDemand()
