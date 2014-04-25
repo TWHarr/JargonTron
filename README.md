@@ -33,5 +33,5 @@ JargonTron will randomly tweet out some jargon every so often, but you can also 
 ##Coming Soon
 See the Issues tab
 ##Release Notes
-v .2 4/24/14- First release. Still brittle, but now accepts input from approved users and can generate tweets.
+v .2 4/24/14- First release. Still brittle, but now accepts input from approved users and can generate tweets. <br>
 v .1 4/24/14- Early release with limited functionality to start filling the tables. Can't tweet out, can only accept content from approved sources.
