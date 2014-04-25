@@ -73,7 +73,7 @@ def intake(tweets):
   commands = ["player", "quip", "exc"]
   for tweet in reversed(tweets):
     text = tweet[0][12:].split("+", 1)
-    if (tweet[0][12:].lstrip().rstrip() == "hit me"):
+    if (tweet[0][12:].lstrip().rstrip().lower() == "hit me"):
       pass
     elif (text[0].lstrip().rstrip() in commands):
       tableType = text[0].lstrip().rstrip()
@@ -115,7 +115,7 @@ def onDemand():
   tweets = twitter.get_mentions_timeline()
   for tweet in reversed(tweets):
     text = tweet['text'][12:]
-    if ((text.lstrip().rstrip() == "hit me") and (int(tweet['id']) > int(lastTweet))):
+    if ((text.lstrip().rstrip().lower() == "hit me") and (int(tweet['id']) > int(lastTweet))):
       newJargon = generate()
       newTweet = "@" + tweet['user']['screen_name'] + " " + newJargon
       newTweet = newTweet[:139]
