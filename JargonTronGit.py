@@ -57,16 +57,24 @@ def getLast():
 def strToClass(str):
   return getattr(sys.modules[__name__], str)
 
-def prune(replies, followers):
-  """ select only tweets from users the bot follows """
+def simplify(replies, followers):
+  """ cut down stream JSON, eliminate replies to just get commands """
 
   prunedTweets = []
   for tweet in replies:
-    if ((tweet['user']['id'] in followers) and (tweet['in_reply_to_status_id'] == None) and (int(tweet['id']) > int(lastTweet))):
+    if ((tweet['in_reply_to_status_id'] == None) and (int(tweet['id']) > int(lastTweet)) and (tweet['user']['id'] in followers)):
       prunedTweets.append([
         tweet['text'],
         tweet['id'],
         tweet['user']['screen_name'],
+        True
+        ])
+    elif ((tweet['in_reply_to_status_id'] == None) and (int(tweet['id']) > int(lastTweet)) and (tweet['user']['id'] not in followers)):
+      prunedTweets.append([
+        tweet['text'],
+        tweet['id'],
+        tweet['user']['screen_name'],
+        False
         ])
   return prunedTweets
 
@@ -76,38 +84,35 @@ def intake(tweets):
   commands = ["player", "quip", "exc"]
   for tweet in reversed(tweets):
     text = tweet[0][12:].split("+", 1)
-    if (tweet[0][12:].lstrip().rstrip().lower() == "hit me"):
-      pass
-    elif (text[0].lstrip().rstrip() in commands):
-      tableType = text[0].lstrip().rstrip()
-      userInput = text[1].lstrip().rstrip()
-      try:
-        newRow(strToClass(tableType), userInput)
-        newTweet = "@" + tweet[2] + " Cool, adding " + userInput + " to the database."
-        newTweet = newTweet[:130]
-        twitter.update_status(status=newTweet, in_reply_to_status_id=int(tweet[1]))
-      except:
-        #exc_type, exc_value, exc_traceback = sys.exc_info()
-        #traceback.print_exception(exc_type, exc_value, exc_traceback)
-        newTweet = "@" + tweet[2] + " It looks like" + text[1] + " was already added. Try again?"
-        newTweet = newTweet[:130]
+    if (tweet[3] == True):
+      if (tweet[0][12:].lstrip().rstrip().lower() == "hit me"):
+        pass
+      elif (text[0].lstrip().rstrip() in commands):
+        tableType = text[0].lstrip().rstrip()
+        userInput = text[1].lstrip().rstrip()
         try:
+          newRow(strToClass(tableType), userInput)
+          newTweet = "@" + tweet[2] + " Cool, adding " + userInput + " to the database."
+          newTweet = newTweet[:130]
           twitter.update_status(status=newTweet, in_reply_to_status_id=int(tweet[1]))
         except:
+          #exc_type, exc_value, exc_traceback = sys.exc_info()
+          #traceback.print_exception(exc_type, exc_value, exc_traceback)
+          newTweet = "@" + tweet[2] + " It looks like" + text[1] + " was already added. Try again?"
+          newTweet = newTweet[:130]
+          try:
+            twitter.update_status(status=newTweet, in_reply_to_status_id=int(tweet[1]))
+          except:
+            print "Duplicate status."
+    elif (tweet[3] == False):
+      if (tweet[0][12:].lstrip().rstrip().lower() == "hit me"):
+        pass
+      elif (text[0].lstrip().rstrip() in commands):
+        try:
+          twitter.update_status(status=tweet[2] + "Sorry, I'm not following you yet. Checking to see if I should. You'll hear back soon.", in_reply_to_status_id=int(tweet[1]))
+          twitter.update_status(status="@DoHimJob should I follow @" + tweet[2]+" ?", in_reply_to_status_id=int(tweet[1]))
+        except:
           print "Duplicate status."
-    """
-
-    This is causing problems when people talk ABOUT the bot, but are not giving commands.
-    Commenting out until it can determine which is which.
-
-    else:
-      newTweet = "@" + tweet[2] + " Huh? Did you follow the format? Find it here: http://bit.ly/1k9x0zH."
-      newTweet = newTweet[:130]
-      try:
-        twitter.update_status(status=newTweet, in_reply_to_status_id=int(tweet[1]))
-      except:
-        print "Duplicate status."
-    """
 
 def generate():
   """ Generate a new jargon tweet """
@@ -143,6 +148,6 @@ def periodic():
 
 
 getLast()
-intake(prune(twitter.get_mentions_timeline(), twitter.get_friends_ids()['ids']))
+intake(simplify(twitter.get_mentions_timeline(), twitter.get_friends_ids()['ids']))
 onDemand()
 periodic()
