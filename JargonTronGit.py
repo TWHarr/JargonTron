@@ -78,11 +78,11 @@ def simplify(replies, followers):
         ])
   return prunedTweets
 
-def intake(tweets):
+def intake(items):
   """ add new phrases from pruned selection """
 
   commands = ["player", "quip", "exc"]
-  for tweet in reversed(tweets):
+  for tweet in reversed(items):
     text = tweet[0][12:].split("+", 1)
     if (tweet[3] == True):
       if (tweet[0][12:].lstrip().rstrip().lower() == "hit me"):
@@ -109,7 +109,7 @@ def intake(tweets):
         pass
       elif (text[0].lstrip().rstrip() in commands):
         try:
-          twitter.update_status(status=tweet[2] + "Sorry, I'm not following you yet. Checking to see if I should. You'll hear back soon.", in_reply_to_status_id=int(tweet[1]))
+          twitter.update_status(status= "@" + tweet[2] + " Sorry, I'm not following you yet. Checking to see if I should. You'll hear back soon.", in_reply_to_status_id=int(tweet[1]))
           twitter.update_status(status="@DoHimJob should I follow @" + tweet[2]+" ?", in_reply_to_status_id=int(tweet[1]))
         except:
           print "Duplicate status."
@@ -126,11 +126,10 @@ def generate():
   newTweet = firstP + " " + secondP + " " + thirdP
   return newTweet
 
-def onDemand():
+def onDemand(items):
   """ Use generate() to provide a new tweet for a user when they tweet 'hit me' """
 
-  tweets = twitter.get_mentions_timeline()
-  for tweet in reversed(tweets):
+  for tweet in reversed(items):
     text = tweet['text'][12:]
     if ((text[:6].lstrip().rstrip().lower() == "hit me") and (int(tweet['id']) > int(lastTweet))):
       newJargon = generate()
@@ -146,8 +145,21 @@ def periodic():
     newTweet = generate()
     twitter.update_status(status=newTweet)
 
+def administration(items):
+  """ follow or reject new users who put in commands """
 
+  for tweet in reversed(items):
+    if (tweet['user']['id'] == 22884755):
+      text = tweet['text'][10:].split(" ")
+      if (text[1] == "approve"):
+        twitter.create_friendship(screen_name=text[2])
+        twitter.update_status(status="@"+ text[2] + " Good news, you've been approved! Please retry any additions prior to this message again.")
+      elif (text[1] == "reject"):
+        twitter.update_status(status="@"+ text[2] + " Sorry, I'm not going to add you right now.")
+
+tweets = twitter.get_mentions_timeline()
 getLast()
 intake(simplify(twitter.get_mentions_timeline(), twitter.get_friends_ids()['ids']))
-onDemand()
+onDemand(tweets)
+administration(tweets)
 periodic()
