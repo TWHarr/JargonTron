@@ -96,8 +96,8 @@ def intake(items):
                 userInput = text[1].strip()
                 try:
                     new_row(str_to_class(tableType), userInput)
-                    newTweet = ("@" + tweet[2] + " Cool, adding " + userInput
-                                + " to the database.")
+                    newtweet = ("@%s Cool, adding %s to the database." %
+                                    (tweet[2], userInput))
                     newTweet = newTweet[:130]
                     twitter.update_status(status=newTweet,
                                         in_reply_to_status_id=int(tweet[1]))
@@ -107,6 +107,9 @@ def intake(items):
                                                 #exc_traceback)
                     newTweet = ("@" + tweet[2] + " It looks like" + text[1] +
                                 " was already added. Try again?")
+
+                    newTweet = ("@%s It looks like %s was already added. Try again?"
+                                % (tweet[2], text[1]))
                     newTweet = newTweet[:130]
                     try:
                         twitter.update_status(status=newTweet,
