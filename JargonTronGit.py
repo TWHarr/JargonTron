@@ -63,14 +63,16 @@ def simplify(replies, followers):
 
     prunedTweets = []
     for tweet in replies:
-        if ((tweet['in_reply_to_status_id'] == None) and (int(tweet['id']) > int(lastTweet)) and (tweet['user']['id'] in followers)):
+        if ((tweet['in_reply_to_status_id'] == None) and (int(tweet['id']) >
+                int(lastTweet)) and (tweet['user']['id'] in followers)):
             prunedTweets.append([
             tweet['text'],
             tweet['id'],
             tweet['user']['screen_name'],
             True
             ])
-        elif ((tweet['in_reply_to_status_id'] == None) and (int(tweet['id']) > int(lastTweet)) and (tweet['user']['id'] not in followers)):
+        elif ((tweet['in_reply_to_status_id'] == None) and (int(tweet['id']) >
+                int(lastTweet)) and (tweet['user']['id'] not in followers)):
             prunedTweets.append([
             tweet['text'],
             tweet['id'],
@@ -93,16 +95,21 @@ def intake(items):
                 userInput = text[1].lstrip().rstrip()
                 try:
                     new_row(str_to_class(tableType), userInput)
-                    newTweet = "@" + tweet[2] + " Cool, adding " + userInput + " to the database."
+                    newTweet = ("@" + tweet[2] + " Cool, adding " + userInput
+                                + " to the database.")
                     newTweet = newTweet[:130]
-                    twitter.update_status(status=newTweet, in_reply_to_status_id=int(tweet[1]))
+                    twitter.update_status(status=newTweet,
+                                        in_reply_to_status_id=int(tweet[1]))
                 except:
                     #exc_type, exc_value, exc_traceback = sys.exc_info()
-                    #traceback.print_exception(exc_type, exc_value, exc_traceback)
-                    newTweet = "@" + tweet[2] + " It looks like" + text[1] + " was already added. Try again?"
+                    #traceback.print_exception(exc_type, exc_value,
+                                                #exc_traceback)
+                    newTweet = ("@" + tweet[2] + " It looks like" + text[1] +
+                                " was already added. Try again?")
                     newTweet = newTweet[:130]
                     try:
-                        twitter.update_status(status=newTweet, in_reply_to_status_id=int(tweet[1]))
+                        twitter.update_status(status=newTweet,
+                                        in_reply_to_status_id=int(tweet[1]))
                     except:
                         print "Duplicate status."
             elif (tweet[3] == False):
@@ -110,8 +117,13 @@ def intake(items):
                     pass
                 elif (text[0].lstrip().rstrip() in commands):
                     try:
-                        twitter.update_status(status= "@" + tweet[2] + " Sorry, I'm not following you yet. Checking to see if I should. You'll hear back soon.", in_reply_to_status_id=int(tweet[1]))
-                        twitter.update_status(status="@DoHimJob should I follow @" + tweet[2]+" ?", in_reply_to_status_id=int(tweet[1]))
+                        twitter.update_status(status= "@" + tweet[2] +
+                            " Sorry, I'm not following you yet. Checking to" +
+                            "see if I should. You'll hear back soon.",
+                            in_reply_to_status_id=int(tweet[1]))
+                        twitter.update_status(status=
+                            "@DoHimJob should I follow @" + tweet[2]+" ?",
+                            in_reply_to_status_id=int(tweet[1]))
                     except:
                         print "Duplicate status."
 
@@ -128,15 +140,18 @@ def generate():
     return newTweet
 
 def on_demand(items):
-    """ Use generate() to provide a new tweet for a user when they tweet 'hit me' """
+    """ Use generate() to provide a new tweet for a
+    user when they tweet 'hit me' """
 
     for tweet in reversed(items):
         text = tweet['text'][12:]
-        if ((text[:6].lstrip().rstrip().lower() == "hit me") and (int(tweet['id']) > int(lastTweet))):
+        if ((text[:6].lstrip().rstrip().lower() == "hit me")
+                and (int(tweet['id']) > int(lastTweet))):
             newJargon = generate()
             newTweet = "@" + tweet['user']['screen_name'] + " " + newJargon
             newTweet = newTweet[:139]
-            twitter.update_status(status=newTweet, in_reply_to_status_id=int(tweet['id']))
+            twitter.update_status(status=newTweet,
+                                    in_reply_to_status_id=int(tweet['id']))
 
 def periodic():
     """ Periodically tweet out a jargon phrase using generate() """
@@ -154,13 +169,17 @@ def administration(items):
               text = tweet['text'][10:].split(" ")
               if (text[1] == "approve"):
                   twitter.create_friendship(screen_name=text[2])
-                  twitter.update_status(status="@"+ text[2] + " Good news, you've been approved! Please retry any additions prior to this message again.")
+                  twitter.update_status(status="@"+ text[2] +
+                      " Good news, you've been approved!" +
+                      " Please retry any additions prior to this message again.")
               elif (text[1] == "reject"):
-                  twitter.update_status(status="@"+ text[2] + " Sorry, I'm not going to add you right now.")
+                  twitter.update_status(status="@"+ text[2] +
+                                 " Sorry, I'm not going to add you right now.")
 
 tweets = twitter.get_mentions_timeline()
 get_last()
-intake(simplify(twitter.get_mentions_timeline(), twitter.get_friends_ids()['ids']))
+intake(simplify(twitter.get_mentions_timeline(),
+                twitter.get_friends_ids()['ids']))
 on_demand(tweets)
 administration(tweets)
 periodic()
