@@ -87,11 +87,11 @@ def intake(items):
     """ add new phrases from pruned selection """
 
     for tweet in reversed(items):
-        text = tweet_less_sn.split("+", 1)
-        if (tweet[3] == True):
-            if (tweet_less_sn.lstrip().rstrip().lower() == "hit me"):
-                pass
-            elif (text[0].lstrip().rstrip() in settings.commands):
+        text = tweet[0][tweet_less_sn:].split("+", 1)
+        if tweet[0][tweet_less_sn:].lstrip().rstrip().lower() == "hit me":
+            continue
+        elif tweet[3]:
+            if (text[0].lstrip().rstrip() in settings.commands):
                 tableType = text[0].lstrip().rstrip()
                 userInput = text[1].lstrip().rstrip()
                 try:
@@ -114,7 +114,7 @@ def intake(items):
                     except:
                         print "Duplicate status."
             elif (tweet[3] == False):
-                if (tweet_less_sn.lstrip().rstrip().lower() == "hit me"):
+                if (tweet[0][tweet_less_sn:].lstrip().rstrip().lower() == "hit me"):
                     pass
                 elif (text[0].lstrip().rstrip() in settings.commands):
                     try:

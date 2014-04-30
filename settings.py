@@ -14,4 +14,4 @@ commands = ["player", "quip", "exc"]
 
 twitter_user_name = "@YOUR_BOT"
 
-tweet_less_sn = tweet[0][len(twitter_user_name) + 1:]
+tweet_less_sn = len(twitter_user_name) + 1
