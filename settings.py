@@ -1,5 +1,4 @@
 db = MySQLDatabase('XXX', user='XXX', passwd="XXX")
-db.connect()
 
 APP_KEY = 'XXX'
 APP_SECRET = 'XXX'
