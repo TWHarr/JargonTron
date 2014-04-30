@@ -9,3 +9,5 @@ OAUTH_TOKEN = 'XXX-XXX'
 OAUTH_TOKEN_SECRET = 'XXX'
 
 bot = 'XXX'
+
+commands = ["player", "quip", "exc"]

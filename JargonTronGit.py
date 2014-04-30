@@ -84,13 +84,12 @@ def simplify(replies, followers):
 def intake(items):
     """ add new phrases from pruned selection """
 
-    commands = ["player", "quip", "exc"]
     for tweet in reversed(items):
         text = tweet[0][12:].split("+", 1)
         if (tweet[3] == True):
             if (tweet[0][12:].lstrip().rstrip().lower() == "hit me"):
                 pass
-            elif (text[0].lstrip().rstrip() in commands):
+            elif (text[0].lstrip().rstrip() in settings.commands):
                 tableType = text[0].lstrip().rstrip()
                 userInput = text[1].lstrip().rstrip()
                 try:
@@ -115,7 +114,7 @@ def intake(items):
             elif (tweet[3] == False):
                 if (tweet[0][12:].lstrip().rstrip().lower() == "hit me"):
                     pass
-                elif (text[0].lstrip().rstrip() in commands):
+                elif (text[0].lstrip().rstrip() in settings.commands):
                     try:
                         twitter.update_status(status= "@" + tweet[2] +
                             " Sorry, I'm not following you yet. Checking to" +
