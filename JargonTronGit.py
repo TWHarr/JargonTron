@@ -76,7 +76,7 @@ def simplify(replies, followers):
                 and int(tweet['id']) > lastTweet):
             prunedTweets.append([
             tweet['text'],
-            tweet['id'],
+            int(tweet['id']),
             tweet['user']['screen_name'],
             tweet['user']['id'] in followers
             ])
@@ -100,7 +100,7 @@ def intake(items):
                                     (tweet[2], userInput))
                     newTweet = newTweet[:130]
                     twitter.update_status(status=newTweet,
-                                        in_reply_to_status_id=int(tweet[1]))
+                                        in_reply_to_status_id=tweet[1])
                 except:
                     #exc_type, exc_value, exc_traceback = sys.exc_info()
                     #traceback.print_exception(exc_type, exc_value,
@@ -113,7 +113,7 @@ def intake(items):
                     newTweet = newTweet[:130]
                     try:
                         twitter.update_status(status=newTweet,
-                                        in_reply_to_status_id=int(tweet[1]))
+                                        in_reply_to_status_id=tweet[1])
                     except:
                         print "Duplicate status."
             elif (tweet[3] == False):
@@ -127,7 +127,7 @@ def intake(items):
                             in_reply_to_status_id=int(tweet[1]))
                         twitter.update_status(status=
                             "@DoHimJob should I follow @" + tweet[2]+" ?",
-                            in_reply_to_status_id=int(tweet[1]))
+                            in_reply_to_status_id=tweet[1])
                     except:
                         print "Duplicate status."
 
