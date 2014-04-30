@@ -116,10 +116,8 @@ def intake(items):
                                         in_reply_to_status_id=tweet[1])
                     except:
                         print "Duplicate status."
-            elif (tweet[3] == False):
-                if (tweet[0][tweet_less_sn:].strip().lower() == "hit me"):
-                    pass
-                elif (text[0].strip() in settings.commands):
+            else:
+                if (text[0].strip() in settings.commands):
                     try:
                         twitter.update_status(status= "@" + tweet[2] +
                             " Sorry, I'm not following you yet. Checking to" +
