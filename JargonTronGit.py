@@ -1,5 +1,8 @@
-import peewee, traceback, sys, random
+#import traceback
+import sys
+import peewee
 from peewee import *
+from random import randint
 from twython import Twython
 from datetime import date
 
@@ -167,7 +170,7 @@ def on_demand(items):
 def periodic():
     """ Periodically tweet out a jargon phrase using generate() """
 
-    tweetCheck = random.randint(0,15)
+    tweetCheck = randint(0,15)
     if (tweetCheck == 5):
         newTweet = generate()
         twitter.update_status(status=newTweet)
