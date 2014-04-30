@@ -88,12 +88,12 @@ def intake(items):
 
     for tweet in reversed(items):
         text = tweet[0][tweet_less_sn:].split("+", 1)
-        if tweet[0][tweet_less_sn:].lstrip().rstrip().lower() == "hit me":
+        if tweet[0][tweet_less_sn:].strip().lower() == "hit me":
             continue
         elif tweet[3]:
-            if (text[0].lstrip().rstrip() in settings.commands):
-                tableType = text[0].lstrip().rstrip()
-                userInput = text[1].lstrip().rstrip()
+            if (text[0].strip() in settings.commands):
+                tableType = text[0].strip()
+                userInput = text[1].strip()
                 try:
                     new_row(str_to_class(tableType), userInput)
                     newTweet = ("@" + tweet[2] + " Cool, adding " + userInput
@@ -114,9 +114,9 @@ def intake(items):
                     except:
                         print "Duplicate status."
             elif (tweet[3] == False):
-                if (tweet[0][tweet_less_sn:].lstrip().rstrip().lower() == "hit me"):
+                if (tweet[0][tweet_less_sn:].strip().lower() == "hit me"):
                     pass
-                elif (text[0].lstrip().rstrip() in settings.commands):
+                elif (text[0].strip() in settings.commands):
                     try:
                         twitter.update_status(status= "@" + tweet[2] +
                             " Sorry, I'm not following you yet. Checking to" +
@@ -148,7 +148,7 @@ def on_demand(items):
 
     for tweet in reversed(items):
         text = tweet['text'][12:]
-        if ((text[:6].lstrip().rstrip().lower() == "hit me")
+        if ((text[:6].strip().lower() == "hit me")
                 and (int(tweet['id']) > lastTweet)):
             newJargon = generate()
             newTweet = "@" + tweet['user']['screen_name'] + " " + newJargon
