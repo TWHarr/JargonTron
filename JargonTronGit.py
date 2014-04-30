@@ -70,23 +70,13 @@ def simplify(replies, followers):
 
     prunedTweets = []
     for tweet in replies:
-        if (tweet['in_reply_to_status_id'] is not None
-                and int(tweet['id']) > lastTweet
-                and tweet['user']['id'] in followers):
+        if (tweet['in_reply_to_status_id'] is None
+                and int(tweet['id']) > lastTweet):
             prunedTweets.append([
             tweet['text'],
             tweet['id'],
             tweet['user']['screen_name'],
-            True
-            ])
-        elif (tweet['in_reply_to_status_id'] == None
-                and int(tweet['id']) > lastTweet
-                and tweet['user']['id'] not in followers):
-            prunedTweets.append([
-            tweet['text'],
-            tweet['id'],
-            tweet['user']['screen_name'],
-            False
+            tweet['user']['id'] in followers
             ])
     return prunedTweets
 
