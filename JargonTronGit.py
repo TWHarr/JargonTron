@@ -56,7 +56,7 @@ def get_last():
     for tweet in stream:
         if (tweet['user']['id'] == settings.bot) :
             if (tweet['in_reply_to_status_id'] != None):
-                lastTweet = tweet['in_reply_to_status_id']
+                lastTweet = int(tweet['in_reply_to_status_id'])
                 print "The last tweet is " + str(lastTweet)
                 break
             else:
@@ -73,7 +73,7 @@ def simplify(replies, followers):
     prunedTweets = []
     for tweet in replies:
         if ((tweet['in_reply_to_status_id'] is not None) and (int(tweet['id']) >
-                int(lastTweet)) and (tweet['user']['id'] in followers)):
+                lastTweet) and (tweet['user']['id'] in followers)):
             prunedTweets.append([
             tweet['text'],
             tweet['id'],
@@ -81,7 +81,7 @@ def simplify(replies, followers):
             True
             ])
         elif ((tweet['in_reply_to_status_id'] == None) and (int(tweet['id']) >
-                int(lastTweet)) and (tweet['user']['id'] not in followers)):
+                lastTweet) and (tweet['user']['id'] not in followers)):
             prunedTweets.append([
             tweet['text'],
             tweet['id'],
@@ -158,7 +158,7 @@ def on_demand(items):
     for tweet in reversed(items):
         text = tweet['text'][12:]
         if ((text[:6].lstrip().rstrip().lower() == "hit me")
-                and (int(tweet['id']) > int(lastTweet))):
+                and (int(tweet['id']) > lastTweet)):
             newJargon = generate()
             newTweet = "@" + tweet['user']['screen_name'] + " " + newJargon
             newTweet = newTweet[:139]
