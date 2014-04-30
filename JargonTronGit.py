@@ -1,7 +1,7 @@
 #import traceback
 import sys
-import peewee
-from peewee import *
+import peewee #against standards, but specified in peewee docs?
+from peewee import * #against standards, but specified in peewee docs?
 from random import randint
 from twython import Twython
 from datetime import date
