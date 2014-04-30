@@ -1,4 +1,6 @@
-db = MySQLDatabase('XXX', user='XXX', passwd="XXX")
+dbname = 'XXX'
+dbuser = 'XXX'
+dbpasswd = 'XXX'
 
 APP_KEY = 'XXX'
 APP_SECRET = 'XXX'

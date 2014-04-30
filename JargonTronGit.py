@@ -7,7 +7,9 @@ from random import randint
 from twython import Twython
 from datetime import date
 
-db = settings.db
+db = MySQLDatabase(settings.dbname,
+                    user=settings.dbuser,
+                    passwd=settings.dbpasswd)
 db.connect()
 
 APP_KEY = settings.APP_KEY
