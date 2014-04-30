@@ -59,8 +59,6 @@ def get_last():
                 lastTweet = int(tweet['in_reply_to_status_id'])
                 print "The last tweet is " + str(lastTweet)
                 break
-            else:
-                pass
 
 
 def str_to_class(str):
