@@ -35,12 +35,12 @@ class quip(peewee.Model):
     class Meta:
         database = db
 
-def newRow(table, userInput):
+def new_row(table, userInput):
     """ add a new row to a table """
     newText = table(text=userInput)
     newText.save()
 
-def getLast():
+def get_last():
     """ Determine where the bot left off """
 
     global lastTweet
@@ -55,7 +55,7 @@ def getLast():
             else:
                 pass
 
-def strToClass(str):
+def str_to_class(str):
     return getattr(sys.modules[__name__], str)
 
 def simplify(replies, followers):
@@ -92,7 +92,7 @@ def intake(items):
                 tableType = text[0].lstrip().rstrip()
                 userInput = text[1].lstrip().rstrip()
                 try:
-                    newRow(strToClass(tableType), userInput)
+                    new_row(str_to_class(tableType), userInput)
                     newTweet = "@" + tweet[2] + " Cool, adding " + userInput + " to the database."
                     newTweet = newTweet[:130]
                     twitter.update_status(status=newTweet, in_reply_to_status_id=int(tweet[1]))
@@ -127,7 +127,7 @@ def generate():
     newTweet = firstP + " " + secondP + " " + thirdP
     return newTweet
 
-def onDemand(items):
+def on_demand(items):
     """ Use generate() to provide a new tweet for a user when they tweet 'hit me' """
 
     for tweet in reversed(items):
@@ -159,8 +159,8 @@ def administration(items):
                   twitter.update_status(status="@"+ text[2] + " Sorry, I'm not going to add you right now.")
 
 tweets = twitter.get_mentions_timeline()
-getLast()
+get_last()
 intake(simplify(twitter.get_mentions_timeline(), twitter.get_friends_ids()['ids']))
-onDemand(tweets)
+on_demand(tweets)
 administration(tweets)
 periodic()
