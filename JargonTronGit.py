@@ -51,10 +51,10 @@ def get_last():
     """ Determine where the bot left off """
 
     global lastTweet
-    stream = twitter.get_user_timeline(user_id=2432961043, count=100)
+    stream = twitter.get_user_timeline(user_id=settings.bot, count=100)
 
     for tweet in stream:
-        if (tweet['user']['id'] == 2432961043) :
+        if (tweet['user']['id'] == settings.bot) :
             if (tweet['in_reply_to_status_id'] != None):
                 lastTweet = tweet['in_reply_to_status_id']
                 print "The last tweet is " + str(lastTweet)
