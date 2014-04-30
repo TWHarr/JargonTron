@@ -180,8 +180,7 @@ def administration(items):
 
 tweets = twitter.get_mentions_timeline()
 get_last()
-intake(simplify(twitter.get_mentions_timeline(),
-                twitter.get_friends_ids()['ids']))
+intake(simplify(tweets, twitter.get_friends_ids()['ids']))
 on_demand(tweets)
 administration(tweets)
 periodic()
