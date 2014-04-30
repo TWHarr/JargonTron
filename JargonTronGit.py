@@ -17,11 +17,13 @@ twitter = Twython(APP_KEY, APP_SECRET,
 
 lastTweet = 0
 
+
 class exc(peewee.Model):
     text = peewee.CharField()
 
     class Meta:
         database = db
+
 
 class player(peewee.Model):
     text = peewee.CharField()
@@ -29,16 +31,19 @@ class player(peewee.Model):
     class Meta:
         database = db
 
+
 class quip(peewee.Model):
     text = peewee.CharField()
 
     class Meta:
         database = db
 
+
 def new_row(table, userInput):
     """ add a new row to a table """
     newText = table(text=userInput)
     newText.save()
+
 
 def get_last():
     """ Determine where the bot left off """
@@ -55,8 +60,10 @@ def get_last():
             else:
                 pass
 
+
 def str_to_class(str):
     return getattr(sys.modules[__name__], str)
+
 
 def simplify(replies, followers):
     """ cut down stream JSON, eliminate replies to just get commands """
@@ -80,6 +87,7 @@ def simplify(replies, followers):
             False
             ])
     return prunedTweets
+
 
 def intake(items):
     """ add new phrases from pruned selection """
@@ -127,6 +135,7 @@ def intake(items):
                     except:
                         print "Duplicate status."
 
+
 def generate():
     """ Generate a new jargon tweet """
 
@@ -138,6 +147,7 @@ def generate():
     thirdP = third.text
     newTweet = firstP + " " + secondP + " " + thirdP
     return newTweet
+
 
 def on_demand(items):
     """ Use generate() to provide a new tweet for a
@@ -153,6 +163,7 @@ def on_demand(items):
             twitter.update_status(status=newTweet,
                                     in_reply_to_status_id=int(tweet['id']))
 
+
 def periodic():
     """ Periodically tweet out a jargon phrase using generate() """
 
@@ -160,6 +171,7 @@ def periodic():
     if (tweetCheck == 5):
         newTweet = generate()
         twitter.update_status(status=newTweet)
+
 
 def administration(items):
     """ follow or reject new users who put in commands """
@@ -175,6 +187,7 @@ def administration(items):
               elif (text[1] == "reject"):
                   twitter.update_status(status="@"+ text[2] +
                                  " Sorry, I'm not going to add you right now.")
+
 
 tweets = twitter.get_mentions_timeline()
 get_last()
