@@ -1,19 +1,20 @@
 #import traceback
 import sys
+import settings
 import peewee #against standards, but specified in peewee docs?
 from peewee import * #against standards, but specified in peewee docs?
 from random import randint
 from twython import Twython
 from datetime import date
 
-db = MySQLDatabase('XXX', user='XXX', passwd="XXX")
+db = settings.db
 db.connect()
 
-APP_KEY = 'XXX'
-APP_SECRET = 'XXX'
+APP_KEY = settings.APP_KEY
+APP_SECRET = settings.APP_SECRET
 
-OAUTH_TOKEN = 'XXX-XXX'
-OAUTH_TOKEN_SECRET = 'XXX'
+OAUTH_TOKEN = settings.OAUTH_TOKEN
+OAUTH_TOKEN_SECRET = settings.OAUTH_TOKEN_SECRET
 
 twitter = Twython(APP_KEY, APP_SECRET,
                   OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
