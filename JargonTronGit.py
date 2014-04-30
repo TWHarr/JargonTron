@@ -134,13 +134,9 @@ def generate():
     """ Generate a new jargon tweet """
 
     first = exc.select().order_by(fn.Rand()).limit(1).get()
-    firstP = first.text
     second = player.select().order_by(fn.Rand()).limit(1).get()
-    secondP = second.text
     third = quip.select().order_by(fn.Rand()).limit(1).get()
-    thirdP = third.text
-    newTweet = firstP + " " + secondP + " " + thirdP
-    return newTweet
+    return "%s %s %s" % (first.text, second.text, third.text)
 
 
 def on_demand(items):
