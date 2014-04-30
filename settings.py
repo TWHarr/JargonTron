@@ -11,3 +11,7 @@ OAUTH_TOKEN_SECRET = 'XXX'
 bot = 'XXX'
 
 commands = ["player", "quip", "exc"]
+
+twitter_user_name = "@YOUR_BOT"
+
+tweet_less_sn = tweet[0][len(twitter_user_name) + 1:]

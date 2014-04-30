@@ -23,6 +23,8 @@ twitter = Twython(APP_KEY, APP_SECRET,
 
 lastTweet = 0
 
+tweet_less_sn = settings.tweet_less_sn
+
 
 class BaseModel(peewee.Model):
     class Meta:
@@ -85,9 +87,9 @@ def intake(items):
     """ add new phrases from pruned selection """
 
     for tweet in reversed(items):
-        text = tweet[0][12:].split("+", 1)
+        text = tweet_less_sn.split("+", 1)
         if (tweet[3] == True):
-            if (tweet[0][12:].lstrip().rstrip().lower() == "hit me"):
+            if (tweet_less_sn.lstrip().rstrip().lower() == "hit me"):
                 pass
             elif (text[0].lstrip().rstrip() in settings.commands):
                 tableType = text[0].lstrip().rstrip()
@@ -112,7 +114,7 @@ def intake(items):
                     except:
                         print "Duplicate status."
             elif (tweet[3] == False):
-                if (tweet[0][12:].lstrip().rstrip().lower() == "hit me"):
+                if (tweet_less_sn.lstrip().rstrip().lower() == "hit me"):
                     pass
                 elif (text[0].lstrip().rstrip() in settings.commands):
                     try:
