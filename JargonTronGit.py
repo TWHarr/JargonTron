@@ -24,25 +24,21 @@ twitter = Twython(APP_KEY, APP_SECRET,
 lastTweet = 0
 
 
-class exc(peewee.Model):
-    text = peewee.CharField()
-
+class BaseModel(peewee.Model):
     class Meta:
         database = db
 
 
-class player(peewee.Model):
+class exc(BaseModel):
     text = peewee.CharField()
 
-    class Meta:
-        database = db
 
-
-class quip(peewee.Model):
+class player(BaseModel):
     text = peewee.CharField()
 
-    class Meta:
-        database = db
+
+class quip(BaseModel):
+    text = peewee.CharField()
 
 
 def new_row(table, userInput):
