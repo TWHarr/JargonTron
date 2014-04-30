@@ -166,7 +166,7 @@ def periodic():
 def administration(items):
     """ follow or reject new users who put in commands """
     for tweet in reversed(items):
-        if (tweet['user']['id'] == 22884755):
+        if (tweet['user']['id'] == settings.yourID):
             text = tweet['text'][10:].split(" ")
             if (text[1] == "approve"):
                 twitter.create_friendship(screen_name=text[2])
