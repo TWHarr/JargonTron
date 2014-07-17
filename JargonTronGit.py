@@ -1,4 +1,4 @@
-#import traceback
+import traceback
 import sys
 import settings
 import peewee #against standards, but specified in peewee docs?
@@ -21,7 +21,8 @@ OAUTH_TOKEN_SECRET = settings.OAUTH_TOKEN_SECRET
 twitter = Twython(APP_KEY, APP_SECRET,
                   OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
 
-lastTweet = 0
+lastTweetStream = twitter.get_user_timeline(user_id=settings.bot)
+lastTweet = int(lastTweetStream[0]['id'])
 
 tweet_less_sn = settings.tweet_less_sn
 
@@ -56,7 +57,7 @@ def get_last():
     stream = twitter.get_user_timeline(user_id=settings.bot, count=100)
 
     for tweet in stream:
-        if (tweet['user']['id'] == settings.bot) :
+        if (tweet['user']['id'] == settings.bot):
             if (tweet['in_reply_to_status_id'] != None):
                 lastTweet = int(tweet['in_reply_to_status_id'])
                 print "The last tweet is " + str(lastTweet)
@@ -96,18 +97,15 @@ def intake(items):
                 userInput = text[1].strip()
                 try:
                     new_row(str_to_class(tableType), userInput)
-                    newtweet = ("@%s Cool, adding %s to the database." %
+                    newTweet = ("@%s Cool, adding %s to the database." %
                                     (tweet[2], userInput))
                     newTweet = newTweet[:130]
                     twitter.update_status(status=newTweet,
                                         in_reply_to_status_id=tweet[1])
                 except:
-                    #exc_type, exc_value, exc_traceback = sys.exc_info()
-                    #traceback.print_exception(exc_type, exc_value,
-                                                #exc_traceback)
-                    newTweet = ("@" + tweet[2] + " It looks like" + text[1] +
-                                " was already added. Try again?")
-
+                    exc_type, exc_value, exc_traceback = sys.exc_info()
+                    traceback.print_exception(exc_type, exc_value,
+                                                exc_traceback)
                     newTweet = ("@%s It looks like %s was already added. Try again?"
                                 % (tweet[2], text[1]))
                     newTweet = newTweet[:130]
@@ -116,18 +114,23 @@ def intake(items):
                                         in_reply_to_status_id=tweet[1])
                     except:
                         print "Duplicate status."
-            else:
-                if (text[0].strip() in settings.commands):
-                    try:
-                        twitter.update_status(status= "@" + tweet[2] +
-                            " Sorry, I'm not following you yet. Checking to" +
-                            "see if I should. You'll hear back soon.",
-                            in_reply_to_status_id=int(tweet[1]))
-                        twitter.update_status(status=
-                            "@DoHimJob should I follow @" + tweet[2]+" ?",
-                            in_reply_to_status_id=tweet[1])
-                    except:
-                        print "Duplicate status."
+
+
+
+"""
+#need to add a new function here to follow friends
+elif (text[0].strip() in settings.commands):
+    try:
+        twitter.update_status(status= "@" + tweet[2] +
+            " Sorry, I'm not following you yet. Checking to" +
+            "see if I should. You'll hear back soon.",
+            in_reply_to_status_id=int(tweet[1]))
+        twitter.update_status(status=
+            "@DoHimJob should I follow @" + tweet[2]+" ?",
+            in_reply_to_status_id=tweet[1])
+    except:
+        print "Duplicate status."
+"""
 
 
 def generate():
