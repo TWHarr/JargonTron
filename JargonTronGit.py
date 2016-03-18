@@ -117,20 +117,6 @@ def intake(items):
 
 
 
-"""
-#need to add a new function here to follow friends
-elif (text[0].strip() in settings.commands):
-    try:
-        twitter.update_status(status= "@" + tweet[2] +
-            " Sorry, I'm not following you yet. Checking to" +
-            "see if I should. You'll hear back soon.",
-            in_reply_to_status_id=int(tweet[1]))
-        twitter.update_status(status=
-            "@DoHimJob should I follow @" + tweet[2]+" ?",
-            in_reply_to_status_id=tweet[1])
-    except:
-        print "Duplicate status."
-"""
 
 
 def generate():
