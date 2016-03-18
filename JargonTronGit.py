@@ -160,7 +160,7 @@ def on_demand(items):
 def periodic():
     """ Periodically tweet out a jargon phrase using generate() """
 
-    tweetCheck = randint(0,15)
+    tweetCheck = randint(0,35)
     if (tweetCheck == 5):
         newTweet = generate()
         twitter.update_status(status=newTweet)
