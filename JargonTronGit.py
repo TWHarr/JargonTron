@@ -131,15 +131,15 @@ def intake(items):
 def administration(items):
     """ follow or reject new users who put in commands """
     for tweet in reversed(items):
-        if (tweet['user']['id'] == settings.yourID):
-            text = tweet['text'][10:].split(" ")
-            if (text[1] == "approve"):
-                twitter.create_friendship(screen_name=text[2])
-                twitter.update_status(status="@"+ text[2] +
+        if (tweet['user']['id'] == int(settings.yourID)):
+            text = tweet['text'][12:].split(" ")
+            if (len(text) >= 2) and (text[1] == "approve"):
+                twitter.create_friendship(screen_name=text[0][1:])
+                twitter.update_status(status=text[0] +
                     " Good news, you've been approved!" +
                     " Please retry any additions prior to this message again.")
-            elif (text[1] == "reject"):
-                twitter.update_status(status="@"+ text[2] +
+            elif (len(text) >= 2) and (text[1] == "reject"):
+                twitter.update_status(status=text[0] +
                                 " Sorry, I'm not going to add you right now.")
 
 
