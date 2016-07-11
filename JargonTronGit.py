@@ -128,21 +128,6 @@ def intake(items):
                     print "Duplicate status."
 
 
-def administration(items):
-    """ follow or reject new users who put in commands """
-    for tweet in reversed(items):
-        if (tweet['user']['id'] == int(settings.yourID)):
-            text = tweet['text'][12:].split(" ")
-            if (len(text) >= 2) and (text[1] == "approve"):
-                twitter.create_friendship(screen_name=text[0][1:])
-                twitter.update_status(status=text[0] +
-                    " Good news, you've been approved!" +
-                    " Please retry any additions prior to this message again.")
-            elif (len(text) >= 2) and (text[1] == "reject"):
-                twitter.update_status(status=text[0] +
-                                " Sorry, I'm not going to add you right now.")
-
-
 def generate():
     """ Generate a new jargon tweet """
 
@@ -180,5 +165,4 @@ tweets = twitter.get_mentions_timeline()
 get_last()
 intake(simplify(tweets, twitter.get_friends_ids()['ids']))
 on_demand(tweets)
-administration(tweets)
 periodic()
